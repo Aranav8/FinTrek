@@ -8,11 +8,16 @@ const job = require("./config/cron.js")
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
 
 if (process.env.NODE_ENV === "production") {
     job.start();
 }
+
+const PORT = process.env.PORT || 5001;
+
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "ok" });
+})
 
 app.use(ratelimiter);
 app.use(express.json());
