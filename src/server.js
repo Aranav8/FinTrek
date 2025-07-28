@@ -3,11 +3,16 @@ const dotenv = require("dotenv");
 const ratelimiter = require("./middleware/rateLimiter.js");
 const transactionsRoute = require("./routes/transactionsRoute.js");
 const { initDB } = require("./config/database.js");
+const job = require("./config/cron.js")
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+if (process.env.NODE_ENV === "production") {
+    job.start();
+}
 
 app.use(ratelimiter);
 app.use(express.json());
